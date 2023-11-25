@@ -60,7 +60,7 @@ while (true)
 
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////
 static void PrintAllContact(Dictionary<Contact, List<Call>> contactsDict)
 {
     Console.WriteLine("~ SVI KONTAKTI ~");
@@ -190,7 +190,7 @@ static void ManageContact(Dictionary<Contact, List<Call>> contactsDict)
         {
             while (true)
             {
-                Console.WriteLine("~ SUBMENU ~\n"
+                Console.WriteLine("\n~ SUBMENU ~\n"
                + "1 - Ispis svih poziva\n"
                + "2 - Novi poziv\n"
                + "3 - Izlaz iz podmenua\n"
@@ -209,7 +209,7 @@ static void ManageContact(Dictionary<Contact, List<Call>> contactsDict)
                     switch (sub_choice)
                     {
                         case 1:
-                            PrintAllCalls(contactsDict);
+                            PrintAllCallsName(contactsDict,contact_name);
                             break;
                         case 2:
                             NewCall(contactsDict);
@@ -233,7 +233,6 @@ static void ManageContact(Dictionary<Contact, List<Call>> contactsDict)
     
 
 }
-
 static void NewCall(Dictionary<Contact, List<Call>> contactsDict)
 {
     /***2.Kreiranje novog poziva -odgovor na poziv mora biti random generirana vrijednost čije su moguce vrijednosti 
@@ -274,7 +273,6 @@ static void NewCall(Dictionary<Contact, List<Call>> contactsDict)
 
 
 }
-
 static void SimulateCall(Contact contact, Dictionary<Contact, List<Call>> contactsDict, int durationSeconds)
 {
     var newCall = new Call(DateTime.Now, StatusCall.Ended);
@@ -291,7 +289,6 @@ static void SimulateCall(Contact contact, Dictionary<Contact, List<Call>> contac
     Console.WriteLine("Poziv završen");
     Console.WriteLine($"Trajanje poziva: {durationSeconds} sekundi");
 }
-
 static void PrintAllCalls(Dictionary<Contact, List<Call> > contactsDict)
 {
     Console.WriteLine("Unesite ime kontakta: ");
@@ -326,7 +323,33 @@ static void PrintAllCalls(Dictionary<Contact, List<Call> > contactsDict)
     
     
 }
+static void PrintAllCallsName(Dictionary<Contact, List<Call>> contactsDict,string person)
+{
+    
+    var contactPrint = contactsDict.Keys.FirstOrDefault(c => c.Name.ToLower() == person.ToLower());
+    if (contactPrint != null)
+    {
+        Console.WriteLine("~ SVI POZIVI ~");
 
+        if (contactsDict.TryGetValue(contactPrint, out var contact))
+        {
+            foreach (var call in contact)
+            {
+                Console.WriteLine($"{person} : {call.CallTime} - {call.CallStatus}");
+            }
+        }
+        else
+        {
+            Console.WriteLine("Nema poziva");
+        }
+    }
+    else
+    {
+        Console.WriteLine("Kontakt ne postoji u imeniku");
+    }
+
+
+}
 static void Initialize(Dictionary<Contact, List<Call>> contactsDict)
 {
     var contact1 = new Contact("Ana Anic", "099/8568956");
