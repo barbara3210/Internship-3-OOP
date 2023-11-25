@@ -34,10 +34,10 @@ while (true)
                 AddNewContact(contacts_dict);
                 break;
             case 3:
-                DeleteContact();
+                DeleteContact(contacts_dict);
                 break;
             case 4:
-                EditPreferenceContact();
+                EditPreferenceContact(contacts_dict);
                 break;
             case 5:
                 ManageContact(contacts_dict);
@@ -68,31 +68,88 @@ static void AddNewContact(Dictionary<Contact, List<Call>> contactsDict)
     var contactName = Console.ReadLine();
     if (string.IsNullOrEmpty(contactName))
     {
-        Console.WriteLine("Neispravan unos imena kontakta.");
+        Console.WriteLine("Neispravan unos imena kontakta");
+        return;
+    }
+    Console.WriteLine("Unesite broj:");
+    var contactNum = Console.ReadLine();
+    if (string.IsNullOrEmpty(contactName))
+    {
+        Console.WriteLine("Neispravan unos broja");
+        return;
+    }
+    var newContact = new Contact(contactName, contactNum);
+    if(contactsDict.ContainsKey(newContact))
+    {
+        Console.WriteLine("Broj kontakta vec postoji");
+        return;
+    }
+    contactsDict.Add(newContact, new List<Call>());
+    Console.WriteLine("Kontakt dodan u imenik");
+
+}
+static void DeleteContact(Dictionary<Contact, List<Call>> contactsDict)
+{
+    Console.WriteLine("Unesite ime kontakta koji zelite izbrisati: ");
+    var contactName = Console.ReadLine();
+    if (string.IsNullOrEmpty(contactName))
+    {
+        Console.WriteLine("Ponovite unos");
+        return;
     }
     else
     {
-        Console.WriteLine("Unesite broj:");
-        var contactNum=Console.ReadLine();
-        if (string.IsNullOrEmpty(contactName))
+        var deleteContact = contactsDict.Keys.FirstOrDefault(contact => contact.Name == contactName);
+        if(deleteContact != null)
         {
-            Console.WriteLine("Neispravan unos imena kontakta.");
+            contactsDict.Remove(deleteContact);
+            Console.WriteLine("Kontakt izbrisan");
         }
         else
         {
-            var newContact = new Contact(contactName, contactNum);
-            contactsDict.Add(newContact, new List<Call>());
-            Console.WriteLine("Kontakt dodan u imenik.");
+            Console.WriteLine("Kontakt ne postoji u imeniku");
         }
     }
-    
 }
-static void DeleteContact()
+static void EditPreferenceContact(Dictionary<Contact, List<Call>> contactsDict)
 {
+    Console.WriteLine("Unesite ime kontakta:");
+    var contactName = Console.ReadLine();
+    if (string.IsNullOrEmpty(contactName))
+    {
+        Console.WriteLine("Ponovite unos");
+        return;
+    }
+    else
+    {
+        var editContact = contactsDict.Keys.FirstOrDefault(contact => contact.Name == contactName);
+        if (editContact != null)
+        {
+            Console.WriteLine($"Odabrani kontakt: {editContact.Name}: {editContact.Preference}");
+            Console.WriteLine("1 - Favorite"
+                + "2 - Normal"
+                + "3 - Blocked"
+                + "0 - Odustani"
+                );
+            var preference = Console.ReadLine();
+            if (int.TryParse(preference,out int your_preference))
+            {
+                switch(your_preference)
+                {
+                    case 0:
+                        break; 
+                    case 1:
+                        break; 
+                    case 2:
+                        break;
+                    case 3:
+                        
+                        break;
+                }
+            }
 
-}
-static void EditPreferenceContact()
-{
+        }
+    }
 
 }
 static void ManageContact(Dictionary<Contact, List<Call>> contactsDict)
@@ -128,10 +185,10 @@ static void ManageContact(Dictionary<Contact, List<Call>> contactsDict)
                     switch (sub_choice)
                     {
                         case 1:
-                            //PrintAllCalls();
+                            PrintAllCalls();
                             break;
                         case 2:
-
+                            NewCall();
                             break;
                         case 3:
                             break;
@@ -153,6 +210,10 @@ static void ManageContact(Dictionary<Contact, List<Call>> contactsDict)
 
 }
 static void PrintAllCalls()
+{
+
+}
+static void NewCall()
 {
 
 }
